@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Downly</string>
+    <string name="paste_your_link_here">Paste your link here</string>
+    <string name="download_item">Download Item</string>
+</resources>
