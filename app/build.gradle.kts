@@ -56,10 +56,9 @@ dependencies {
 
     implementation(libs.file.downloader)
     implementation(libs.glide)
-    implementation(libs.pdf.viewer)
 
 //    implementation(libs.storage)
 
-    implementation("com.github.fondesa:kpermissions:3.5.0")
-    implementation("com.github.fondesa:kpermissions-coroutines:3.5.0")
+    implementation(libs.kpermissions)
+    implementation(libs.kpermissions.coroutines)
 }
