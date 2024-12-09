@@ -1,4 +1,4 @@
-package id.downly
+package id.downly.main
 
 import android.content.Intent
 import android.net.Uri
@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import id.downly.R
 import id.downly.databinding.ItemDownloadedBinding
+import id.downly.entity.ItemDownloaded
 import java.io.File
-import timber.log.Timber
 
 
 /**
@@ -39,7 +40,7 @@ class DownloadAdapter : RecyclerView.Adapter<DownloadAdapter.DownloadViewHolder>
             override fun areItemsTheSame(
                 oldItemPosition: Int,
                 newItemPosition: Int
-            ): Boolean = downloadedItems[oldItemPosition] == newList[newItemPosition]
+            ): Boolean = downloadedItems[oldItemPosition].path == newList[newItemPosition].path
 
             override fun areContentsTheSame(
                 oldItemPosition: Int,
@@ -61,8 +62,6 @@ class DownloadAdapter : RecyclerView.Adapter<DownloadAdapter.DownloadViewHolder>
                 .load(item.thumbnail ?: R.mipmap.ic_launcher)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.ivFile)
-
-            Timber.tag("ISINYAA").d("asuw $item")
 
             binding.tvTitle.text = item.name
 

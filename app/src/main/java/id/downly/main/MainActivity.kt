@@ -1,4 +1,4 @@
-package id.downly
+package id.downly.main
 
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -7,6 +7,9 @@ import android.view.View
 import android.webkit.MimeTypeMap.getFileExtensionFromUrl
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.fondesa.kpermissions.allGranted
 import com.fondesa.kpermissions.anyPermanentlyDenied
@@ -15,7 +18,10 @@ import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.liulishuo.filedownloader.BaseDownloadTask
 import com.liulishuo.filedownloader.FileDownloadListener
 import com.liulishuo.filedownloader.FileDownloader
+import id.downly.R
 import id.downly.databinding.ActivityMainBinding
+import id.downly.entity.ItemDownloaded
+import id.downly.entity.SupportedFile
 import id.downly.extension.createThumbnailFromImage
 import id.downly.extension.createThumbnailFromPdf
 import id.downly.extension.createThumbnailFromVideo
@@ -27,6 +33,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -46,12 +53,13 @@ class MainActivity : AppCompatActivity() {
         ).build()
     }
 
+    private var fileExtension: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         handlePermissionRequest()
-
 
         setupView()
         FileDownloader.setup(this)
@@ -85,6 +93,44 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val supportedFiles = listOf(
+            SupportedFile(0, "Tiktok Video", R.drawable.tiktok),
+            SupportedFile(1, "Instagram Reels", R.drawable.reels),
+            SupportedFile(2, "Instagram Feed", R.drawable.instagram),
+            SupportedFile(3, "Twitter Video", R.drawable.twitter),
+            SupportedFile(4, "Linkedin Video", R.drawable.linkedin),
+        )
+
+        val iconMap = mapOf(
+            "tiktok.com" to supportedFiles[0],
+            "instagram.com/reel" to supportedFiles[1],
+            "www.instagram.com/p/" to supportedFiles[2],
+        )
+
+        val fileExtensionMap = mapOf(
+            "instagram.com/reel" to "mp4",
+            "www.instagram.com/p/" to "jpg",
+            "tiktok.com" to "mp4",
+        )
+        val spinnerAdapter = SupportedFileAdapter(supportedFiles)
+        binding.spinner.adapter = spinnerAdapter
+
+        binding.etYourLink.doOnTextChanged { url, _, _, _ ->
+            lifecycleScope.launch {
+                binding.progress.isVisible = true
+                delay(300)
+                if (url.isNullOrEmpty()) return@launch
+
+                fileExtension = fileExtensionMap.entries.firstOrNull {
+                    url.contains(it.key, true)
+                }?.value
+
+                iconMap.entries.firstOrNull { url.contains(it.key, true) }?.value?.let {
+                    binding.spinner.setSelection(it.id, true)
+                }
+                binding.progress.isVisible = false
+            }
+        }
         refreshDownloadList()
     }
 
@@ -98,7 +144,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private suspend fun downloadFile(url: String) = withContext(Dispatchers.IO) {
-        var fileExtension: String? = getFileExtensionFromUrl(url)
+        if (fileExtension.isNullOrEmpty()) {
+            fileExtension = getFileExtensionFromUrl(url)
+        }
 
         if (fileExtension.isNullOrEmpty()) {
             val mimeType = getMimeTypeFromUrl(url)

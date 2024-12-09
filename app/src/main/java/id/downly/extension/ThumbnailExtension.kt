@@ -8,7 +8,6 @@ import android.graphics.Paint
 import android.graphics.pdf.PdfRenderer
 import android.media.MediaMetadataRetriever
 import android.os.ParcelFileDescriptor
-import com.github.barteksc.pdfviewer.PDFView
 import java.io.File
 
 /**

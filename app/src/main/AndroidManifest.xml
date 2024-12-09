@@ -20,7 +20,7 @@
         android:theme="@style/Theme.DownloaderApp"
         tools:targetApi="31">
         <activity
-            android:name="id.downly.MainActivity"
+            android:name="id.downly.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

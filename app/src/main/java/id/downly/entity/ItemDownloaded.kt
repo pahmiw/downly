@@ -1,4 +1,4 @@
-package id.downly
+package id.downly.entity
 
 import android.graphics.Bitmap
 
