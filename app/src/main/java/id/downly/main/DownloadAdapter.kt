@@ -1,7 +1,5 @@
 package id.downly.main
 
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,7 +9,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import id.downly.R
 import id.downly.databinding.ItemDownloadedBinding
 import id.downly.entity.ItemDownloaded
-import java.io.File
 
 
 /**
@@ -20,11 +17,12 @@ import java.io.File
 class DownloadAdapter : RecyclerView.Adapter<DownloadAdapter.DownloadViewHolder>() {
 
     private var downloadedItems = listOf<ItemDownloaded>()
+    private var onItemClicked: ((ItemDownloaded) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DownloadViewHolder {
         val binding =
             ItemDownloadedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return DownloadViewHolder(binding)
+        return DownloadViewHolder(binding, onItemClicked)
     }
 
     override fun getItemCount(): Int = downloadedItems.size
@@ -54,7 +52,8 @@ class DownloadAdapter : RecyclerView.Adapter<DownloadAdapter.DownloadViewHolder>
     }
 
     class DownloadViewHolder(
-        private val binding: ItemDownloadedBinding
+        private val binding: ItemDownloadedBinding,
+        private val onItemClicked: ((ItemDownloaded) -> Unit)?
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ItemDownloaded) {
 
@@ -66,12 +65,12 @@ class DownloadAdapter : RecyclerView.Adapter<DownloadAdapter.DownloadViewHolder>
             binding.tvTitle.text = item.name
 
             binding.root.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW)
-                val uri = Uri.fromFile(File(item.path))
-                intent.setDataAndType(uri, "*/*")
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                binding.root.context.startActivity(intent)
+                onItemClicked?.invoke(item)
             }
         }
+    }
+
+    fun setOnItemClicked(item: (ItemDownloaded) -> Unit) {
+        this.onItemClicked = item
     }
 }

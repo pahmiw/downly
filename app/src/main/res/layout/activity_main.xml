@@ -13,6 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="30dp"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="10dp"
         app:boxStrokeColor="@color/black"
         app:boxStrokeWidth="2dp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -67,11 +67,15 @@ fun createThumbnailFromPdf(filePath: String, thumbnailSize: Int): Bitmap? {
 }
 
 fun createThumbnailFromVideo(filePath: String): Bitmap? {
-    val retriever = MediaMetadataRetriever()
-    retriever.setDataSource(filePath)
-    val bitmap = retriever.getFrameAtTime(1, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
-    retriever.release()
-    return bitmap
+    return try {
+        val retriever = MediaMetadataRetriever()
+        retriever.setDataSource(filePath)
+        val bitmap = retriever.getFrameAtTime(1, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
+        retriever.release()
+        bitmap
+    } catch (e: Exception) {
+        null
+    }
 }
 
 fun createUnsupportedFileTypeImage(width: Int, height: Int, text: String): Bitmap {

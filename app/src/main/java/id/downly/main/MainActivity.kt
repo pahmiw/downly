@@ -1,6 +1,8 @@
 package id.downly.main
 
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
@@ -79,6 +81,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupView() {
         downloadAdapter = DownloadAdapter()
+        downloadAdapter?.setOnItemClicked {
+            val intent = Intent(Intent.ACTION_VIEW)
+            val uri = Uri.fromFile(File(it.path))
+            intent.setDataAndType(uri, "*/*")
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            binding.root.context.startActivity(intent)
+        }
         binding.rvDownloadedItems.layoutManager = GridLayoutManager(this, 2)
         binding.rvDownloadedItems.adapter = downloadAdapter
 
@@ -161,7 +170,8 @@ class MainActivity : AppCompatActivity() {
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         val filePath = File(downloadFolder, fileName).absolutePath
 
-        val task = FileDownloader.getImpl().create(url).setPath(filePath)
+        val task = FileDownloader.getImpl().create(url)
+            .setPath(filePath)
             .setListener(object : FileDownloadListener() {
                 override fun pending(task: BaseDownloadTask?, soFarBytes: Int, totalBytes: Int) {
                     showLoading(true)
