@@ -1,4 +1,4 @@
-package id.downly.entity
+package id.downly.domain.model
 
 import androidx.annotation.DrawableRes
 

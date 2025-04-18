@@ -1,11 +1,11 @@
-package id.downly.main
+package id.downly.presentation.main
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import id.downly.databinding.ItemSupportedFileBinding
-import id.downly.entity.SupportedFile
+import id.downly.domain.model.SupportedFile
 
 /**
  * @Author Ahmad Pahmi Created on December 2024

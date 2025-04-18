@@ -1,4 +1,4 @@
-package id.downly.main
+package id.downly.presentation.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import id.downly.R
 import id.downly.databinding.ItemDownloadedBinding
-import id.downly.entity.ItemDownloaded
+import id.downly.domain.model.ItemDownloaded
 
 
 /**

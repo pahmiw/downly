@@ -1,4 +1,4 @@
-package id.downly.main
+package id.downly.presentation.main
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -22,8 +22,8 @@ import com.liulishuo.filedownloader.FileDownloadListener
 import com.liulishuo.filedownloader.FileDownloader
 import id.downly.R
 import id.downly.databinding.ActivityMainBinding
-import id.downly.entity.ItemDownloaded
-import id.downly.entity.SupportedFile
+import id.downly.domain.model.ItemDownloaded
+import id.downly.domain.model.SupportedFile
 import id.downly.extension.createThumbnailFromImage
 import id.downly.extension.createThumbnailFromPdf
 import id.downly.extension.createThumbnailFromVideo

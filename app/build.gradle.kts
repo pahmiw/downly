@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
-    id("kotlin-kapt")
+    alias(libs.plugins.kotlinKapt)
+    alias(libs.plugins.daggerHiltAndroid)
 }
 
 android {
@@ -28,11 +29,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         viewBinding = true
@@ -54,8 +55,20 @@ dependencies {
     implementation(libs.coroutines.core)
     implementation(libs.timber)
 
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp3.logging.interceptor)
+
+    implementation(libs.lifecycle.livedata)
+    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.lifecycle.runtime)
+
     implementation(libs.file.downloader)
     implementation(libs.glide)
+    kapt(libs.glide.compiler)
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 
 //    implementation(libs.storage)
 
