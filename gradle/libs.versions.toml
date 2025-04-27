@@ -1,5 +1,6 @@
 [versions]
 agp = "8.2.2"
+fragment-ktx = "1.8.6"
 glide = "4.16.0"
 google-services = "4.4.2"
 gradle = "7.4.2"
@@ -14,17 +15,24 @@ kpermissions = "3.5.0"
 material = "1.12.0"
 constraintlayout = "2.1.4"
 coroutines = "1.8.0"
+mockito-core = "4.5.1"
+mockito-kotlin = "4.0.0"
 storage = "1.5.6"
 timber = "5.0.1"
 file-downloader = "1.7.7"
 retrofit = "2.11.0"
 okhttp3 = "4.12.0"
+firebase-crashlytics = "19.4.2"
+google-gms-google-services = "4.4.2"
+google-firebase-crashlytics = "3.0.3"
 
 [libraries]
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment-ktx" }
 google-services = { module = "com.google.gms:google-services", version.ref = "google-services" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kpermissions = { module = "com.github.fondesa:kpermissions", version.ref = "kpermissions" }
 kpermissions-coroutines = { module = "com.github.fondesa:kpermissions-coroutines", version.ref = "kpermissions" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -37,6 +45,8 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito-core" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3" }
@@ -48,6 +58,7 @@ lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", versi
 storage = { module = "com.anggrayudi:storage", version.ref = "storage" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 file-downloader = { group = "com.liulishuo.filedownloader", name = "library", version.ref = "file-downloader" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebase-crashlytics" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -55,5 +66,5 @@ androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinKapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 daggerHiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
-#googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
-
+googleGmsGoogleServices = { id = "com.google.gms.google-services", version.ref = "google-gms-google-services" }
+googleFirebaseCrashlytics = { id = "com.google.firebase.crashlytics", version.ref = "google-firebase-crashlytics" }

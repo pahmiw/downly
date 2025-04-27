@@ -8,6 +8,7 @@ import android.os.Environment
 import android.view.View
 import android.webkit.MimeTypeMap.getFileExtensionFromUrl
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -20,6 +21,7 @@ import com.fondesa.kpermissions.extension.permissionsBuilder
 import com.liulishuo.filedownloader.BaseDownloadTask
 import com.liulishuo.filedownloader.FileDownloadListener
 import com.liulishuo.filedownloader.FileDownloader
+import dagger.hilt.android.AndroidEntryPoint
 import id.downly.R
 import id.downly.databinding.ActivityMainBinding
 import id.downly.domain.model.ItemDownloaded
@@ -30,21 +32,18 @@ import id.downly.extension.createThumbnailFromVideo
 import id.downly.extension.createUnsupportedFileTypeImage
 import id.downly.extension.getFileExtensionFromMimeType
 import id.downly.extension.getMimeTypeFromUrl
+import id.downly.utils.Either
 import java.io.File
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by viewModels<MainViewModel>()
 
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private var downloadAdapter: DownloadAdapter? = null
 
     // TODO handle request
@@ -64,7 +63,22 @@ class MainActivity : AppCompatActivity() {
         handlePermissionRequest()
 
         setupView()
+        setupObserver()
         FileDownloader.setup(this)
+    }
+
+    private fun setupObserver() {
+        viewModel.autolink.observe(this) {
+            when (it) {
+                is Either.Error -> {
+                    Toast.makeText(this, "gagal $it", Toast.LENGTH_SHORT).show()
+                }
+
+                is Either.Success -> {
+                    downloadFile(it.data.url)
+                }
+            }
+        }
     }
 
     private fun handlePermissionRequest() {
@@ -94,9 +108,8 @@ class MainActivity : AppCompatActivity() {
         binding.tvDownloadItem.setOnClickListener {
             val url = binding.etYourLink.text.toString()
             if (url.isNotEmpty()) {
-                scope.launch {
-                    downloadFile(url)
-                }
+//                viewModel.getSocialAutoLink("https://youtu.be/KHTemEpkwyI?si=tXQoUu-VLTj27RSr")
+                downloadFile("https://youtu.be/KHTemEpkwyI?si=tXQoUu-VLTj27RSr")
             } else {
                 showToast("Url Can't be Empty")
             }
@@ -152,11 +165,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun downloadFile(url: String) = withContext(Dispatchers.IO) {
+    private fun downloadFile(url: String) {
         if (fileExtension.isNullOrEmpty()) {
             fileExtension = getFileExtensionFromUrl(url)
         }
 
+        fileExtension = "mp4"
         if (fileExtension.isNullOrEmpty()) {
             val mimeType = getMimeTypeFromUrl(url)
             fileExtension = getFileExtensionFromMimeType(mimeType)
@@ -245,6 +259,5 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-        scope.cancel()
     }
 }
